@@ -23,35 +23,11 @@ class Nodo
     Nodo* pai;
     string acao;
     int custo;
-    int h;
-    unsigned int id;
-
-    static unsigned int ID;
 
     Nodo(){}
 
     Nodo(const vector<short int>& estado, Nodo* pai, const string& acao, int custo)
-        : estado(estado), pai(pai), acao(acao), custo(custo) {id = ID ++;}
-
-    void clear_id(){
-        ID = 0;
-    }
-
-    int distanceManhatan(){
-        media_count ++;
-        int distancia = 0;
-        for (int i = 0; i < 9; ++i) {
-            if (estado[i]) {
-                int val = estado[i];
-                int rowDistance = std::abs((val) % 3 - static_cast<int>(i % 3));
-                int colDistance = std::abs((val) / 3 - static_cast<int>(i / 3));
-                distancia += rowDistance + colDistance;
-            }
-        }
-        this->h = distancia;
-        media_heuristica += distancia;
-    	return distancia;
-    }
+        : estado(estado), pai(pai), acao(acao), custo(custo) {}
 
     string convert()
     {
@@ -91,25 +67,21 @@ class Nodo
         if(i != 0 && i != 1 && i != 2 && this->acao.compare("baixo")){
             sucessores.push_back(new Nodo(swap(this->estado,i-3,i),pai,"cima",this->custo + 1));
             nos_alocados.push_back(sucessores.back());
-            sucessores.back()->distanceManhatan();
         }
 
         if(i != 0 && i != 3 && i != 6 && this->acao.compare("direita")){
             sucessores.push_back(new Nodo(swap(this->estado,i-1,i),pai,"esquerda",this->custo + 1));
             nos_alocados.push_back(sucessores.back());
-            sucessores.back()->distanceManhatan();
         }
 
         if(i != 2 && i != 5 && i != 8 && this->acao.compare("esquerda")){
             sucessores.push_back(new Nodo(swap(this->estado,i+1,i),pai,"direita",this->custo + 1));
             nos_alocados.push_back(sucessores.back());
-            sucessores.back()->distanceManhatan();
         }
 
         if(i != 6 && i != 7 && i != 8 && this->acao.compare("cima")){
             sucessores.push_back(new Nodo(swap(this->estado,i+3,i),pai,"baixo",this->custo + 1));
             nos_alocados.push_back(sucessores.back()); 
-            sucessores.back()->distanceManhatan();
         }
     }
 
@@ -119,58 +91,5 @@ class Nodo
             this->pai->caminho(caminho);
         }
     }
-
-    void printEstado() const
-    {
-        int sizeP = this->estado.size();
-        cout << this->acao << " ";
-        cout << "(" << this->h << "," << this->custo << ":" << this->h + this->custo <<")" <<" "<<endl;
-        if(sizeP == 9){
-            for(int i = 0; i < 9; i++){
-                    cout << this->estado[i] << " ";
-                if(!((i+1)%3))
-                    cout << endl;
-            }
-            cout << endl;
-        }
-        else
-        {
-            for(int i = 0; i < 16; i++){
-                    cout << this->estado[i] << '\t';
-                if(!((i+1)%4))
-                    cout << endl;
-            }
-            cout << endl;
-        }
-    }
-};
-
-unsigned int Nodo::ID = 0;
-
-class CompareGBFS 
-{
-    public:
-        bool operator()(Nodo *a, Nodo *b){
-            if(a->h!= b->h){
-                return a->h > b->h;
-                }
-            if(a->custo != b->custo)
-                return a->custo < b->custo;
-            return a->id < b->id;
-        }
-};
-
-class CompareASTAR
-{
-    public:
-        bool operator()(Nodo *a,Nodo *b){
-            int f_a = a->custo + a->h;
-            int f_b = b->custo + b->h;
-            if(f_a != f_b)
-                return f_a > f_b;
-            if(a->h!= b->h)
-                return a->h > b->h;
-            return a->id < b->id;
-        }
 };
 

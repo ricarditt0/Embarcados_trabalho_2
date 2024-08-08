@@ -13,8 +13,6 @@
 using namespace std;
 
 long int nos_expandidos = 0;
-double media_heuristica = 0;
-int media_count = 0;
 
 class Nodo
 {
@@ -38,7 +36,6 @@ class Nodo
     }
 
     int distanceManhatan(){
-        media_count ++;
         int distancia = 0;
         for (int i = 0; i < 9; ++i) {
             if (estado[i]) {
@@ -49,7 +46,6 @@ class Nodo
             }
         }
         this->h = distancia;
-        media_heuristica += distancia;
     	return distancia;
     }
 
@@ -119,30 +115,6 @@ class Nodo
             this->pai->caminho(caminho);
         }
     }
-
-    void printEstado() const
-    {
-        int sizeP = this->estado.size();
-        cout << this->acao << " ";
-        cout << "(" << this->h << "," << this->custo << ":" << this->h + this->custo <<")" <<" "<<endl;
-        if(sizeP == 9){
-            for(int i = 0; i < 9; i++){
-                    cout << this->estado[i] << " ";
-                if(!((i+1)%3))
-                    cout << endl;
-            }
-            cout << endl;
-        }
-        else
-        {
-            for(int i = 0; i < 16; i++){
-                    cout << this->estado[i] << '\t';
-                if(!((i+1)%4))
-                    cout << endl;
-            }
-            cout << endl;
-        }
-    }
 };
 
 unsigned int Nodo::ID = 0;
@@ -160,17 +132,4 @@ class CompareGBFS
         }
 };
 
-class CompareASTAR
-{
-    public:
-        bool operator()(Nodo *a,Nodo *b){
-            int f_a = a->custo + a->h;
-            int f_b = b->custo + b->h;
-            if(f_a != f_b)
-                return f_a > f_b;
-            if(a->h!= b->h)
-                return a->h > b->h;
-            return a->id < b->id;
-        }
-};
 

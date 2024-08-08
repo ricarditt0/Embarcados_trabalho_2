@@ -120,45 +120,10 @@ class Nodo
         }
     }
 
-    void printEstado() const
-    {
-        int sizeP = this->estado.size();
-        cout << this->acao << " ";
-        cout << "(" << this->h << "," << this->custo << ":" << this->h + this->custo <<")" <<" "<<endl;
-        if(sizeP == 9){
-            for(int i = 0; i < 9; i++){
-                    cout << this->estado[i] << " ";
-                if(!((i+1)%3))
-                    cout << endl;
-            }
-            cout << endl;
-        }
-        else
-        {
-            for(int i = 0; i < 16; i++){
-                    cout << this->estado[i] << '\t';
-                if(!((i+1)%4))
-                    cout << endl;
-            }
-            cout << endl;
-        }
-    }
+
 };
 
 unsigned int Nodo::ID = 0;
-
-class CompareGBFS 
-{
-    public:
-        bool operator()(Nodo *a, Nodo *b){
-            if(a->h!= b->h){
-                return a->h > b->h;
-                }
-            if(a->custo != b->custo)
-                return a->custo < b->custo;
-            return a->id < b->id;
-        }
-};
 
 class CompareASTAR
 {
