@@ -76,8 +76,6 @@ void bfs(vector<short int> init_estate)
                 solucao = sucessores.front();
                 solucao->caminho(caminho);
                 comprimento_solucao = caminho.size();
-
-                //resultado = std::chrono::high_resolution_clock::now() - inicio;
                 delete_nodos(nos_alocados);
                 return ;
             }
